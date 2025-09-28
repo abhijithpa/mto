@@ -1,0 +1,6 @@
+{
+  "input_folder": "C:/PIDs",
+  "oda_converter": "C:/Program Files/ODA/ODAFileConverter.exe",
+  "nearby_text_radius": 200,
+  "dxf_version": "ACAD2013"
+}
