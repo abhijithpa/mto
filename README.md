@@ -1,181 +1,136 @@
-# mto
-MTO extractor
 
-Step 1: Install Python
+🔹 Step 1: Install Python
 
-1. Go to the official Python website: https://www.python.org/downloads/
+1. Go to 👉 Python downloads.
 
 
-2. Download the latest Python 3.x installer for Windows.
+2. Download Python 3.11 (64-bit) or newer.
 
 
 3. Run the installer:
 
-Important: Check “Add Python 3.x to PATH” at the bottom.
+✅ Check “Add Python to PATH” before clicking Install.
 
-Choose “Install Now” (recommended).
+Finish installation.
 
 
 
-4. Verify installation:
-
-Open Command Prompt and type:
+4. Confirm installation:
 
 python --version
-pip --version
 
-You should see Python and pip versions displayed.
-
+It should show something like Python 3.11.x.
 
 
 
 
 ---
 
-Step 2: Install Required Python Packages
+🔹 Step 2: Install Required Python Packages
 
-Open Command Prompt and run:
+Open Command Prompt (cmd) and run:
 
 pip install ezdxf pandas openpyxl
 
-ezdxf → Read/write DXF files
+These are all you need:
 
-pandas → Data handling
+ezdxf → read DXF content.
 
-openpyxl → Excel writing and formatting
+pandas → data handling.
 
+openpyxl → write styled Excel files.
 
-Check that installation succeeded:
-
-python -c "import ezdxf, pandas, openpyxl; print('Packages installed')"
 
 
 ---
 
-Step 3: Install ODA File Converter (DWG → DXF)
+🔹 Step 3: Install ODA File Converter
 
-1. Go to the ODA File Converter download page: https://www.opendesign.com/guestfiles/oda_file_converter
-
-
-2. Download the Windows version.
+1. Go to 👉 ODA File Converter download.
 
 
-3. Install it to a folder, e.g., C:\Program Files\ODA\ODAFileConverter.
+2. Download the Windows 64-bit installer.
 
 
-4. Verify installation: Open Command Prompt and navigate to the folder:
+3. Install it (default path is usually):
 
-cd "C:\Program Files\ODA\ODAFileConverter"
-ODAFileConverter.exe
+C:\Program Files\ODA\ODAFileConverter.exe
 
-The GUI should open. You can close it; the script will call it via command line.
-
+This tool is needed to convert DWG → DXF.
 
 
 
 
 ---
 
-Step 4: Prepare Your MTO Script
+🔹 Step 4: Prepare Project Folder
 
-1. Create a folder for your project, e.g., C:\PIDs_MTO.
+Make a folder, e.g.:
+
+C:\MTO_Project\
+
+Inside it, put:
+
+mto_script.py  (the universal script I gave you)
+
+config.json (will be auto-created if missing)
+
+Your CAD drawings (.dwg and .dxf)
 
 
-2. Save the Python script (mto_extractor.py) in this folder.
 
+---
 
-3. Create a config.json in the same folder:
+🔹 Step 5: Configure config.json
 
-
+The first time you run the script, it will auto-create a config.json.
+Edit it (Notepad) to look like this:
 
 {
-  "input_folder": "C:/PIDs_MTO/DWG_DXF_Drawings",
-  "oda_converter": "C:/Program Files/ODA/ODAFileConverter/ODAFileConverter.exe",
-  "nearby_text_radius": 200,
-  "dxf_version": "ACAD2013"
+    "input_folder": "C:/MTO_Project",
+    "oda_converter": "C:/Program Files/ODA/ODAFileConverter.exe",
+    "output_excel": "MTO.xlsx",
+    "output_log": "MTO_log.txt",
+    "dxf_version": "ACAD2013",
+    "nearby_text_radius": 200.0
 }
 
-Replace input_folder with the path where your drawings are stored.
 
-Make sure the ODA converter path matches the installed location.
+---
+
+🔹 Step 6: Run the Script
+
+From Command Prompt:
+
+cd C:\MTO_Project
+python mto_script.py
+
+The script will:
+
+Read .dxf files directly.
+
+Convert .dwg → .dxf using ODA.
+
+Extract blocks + attributes (P&ID).
+
+Extract pipes + lengths (Isometrics).
+
+Save output to:
+
+MTO.xlsx → with Detailed_Data, Grouped_MTO, and File_Status.
+
+MTO_log.txt → with processing details.
+
 
 
 
 ---
 
-Step 5: Place Your Drawings
+🔹 Step 7: Check Output
 
-Put all your DXF/DWG drawings in the folder specified in input_folder, e.g.:
+Open MTO.xlsx → nicely formatted Excel.
 
-
-C:\PIDs_MTO\DWG_DXF_Drawings
-    ├── Piping1.dxf
-    ├── Piping2.dwg
-
-
----
-
-Step 6: Run the Script
-
-1. Open Command Prompt.
-
-
-2. Navigate to your project folder:
-
-
-
-cd C:\PIDs_MTO
-
-3. Run the script:
-
-
-
-python mto_extractor.py
-
-
----
-
-Step 7: Check Output
-
-After the script runs, inside C:\PIDs_MTO\DWG_DXF_Drawings (or your input_folder) you will find:
-
-MTO.xlsx → 3 formatted sheets:
-
-1. Detailed_Data → All blocks and attributes
-
-
-2. Grouped_MTO → Consolidated quantities
-
-
-3. File_Status → Files processed and status
-
-
-
-MTO_log.txt → Detailed log of what was processed, errors, warnings
-
-
-
----
-
-Step 8: Troubleshooting
-
-1. Python not recognized:
-
-Reinstall Python and make sure “Add to PATH” is checked.
-
-
-
-2. ODA converter path incorrect:
-
-Double-check config.json → "oda_converter" path.
-
-It should point to ODAFileConverter.exe exactly.
-
-
-
-3. Permission issues:
-
-Run Command Prompt as Administrator if needed.
+Check MTO_log.txt if something fails.
 
 
 
